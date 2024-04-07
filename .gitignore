@@ -1,2 +1,6 @@
 /build
-/external
+# /external
+/glfw
+/glm
+/imgui
+/stb
