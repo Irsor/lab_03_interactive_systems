@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21.3)
 
 # Название проекта
-set(PROJECT_NAME GraphicsSample2)
+set(PROJECT_NAME lab_03)
 project(${PROJECT_NAME} VERSION 0.1.0 LANGUAGES C CXX)
 
 # Стандарт C++
