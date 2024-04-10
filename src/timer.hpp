@@ -12,6 +12,7 @@ public:
     Timer();
     std::string checkValue(int menuIndex);
     bool getGate();
+    void setGate(bool value);
     void start();
     std::string getCurrentWidgetName();
     std::string getTextValue(int index);

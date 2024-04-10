@@ -45,6 +45,11 @@ bool Timer::getGate()
     return this->gate;
 }
 
+void Timer::setGate(bool value)
+{
+    gate = value;
+}
+
 void Timer::start()
 {
     std::this_thread::sleep_for(std::chrono::seconds(this->times[this->index]));

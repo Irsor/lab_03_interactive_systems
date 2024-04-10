@@ -8,17 +8,11 @@ void utils::createMenuBar(Timer* timer)
             {
                 if (ImGui::MenuItem(timer->getTextValue(0).c_str(), "Ctrl+O")) 
                 {
-                    if (timer->getGate())
-                    {
-                        timer->checkValue(0);
-                    }
+                    timer->setGate(false);
                 }
                 if (ImGui::MenuItem(timer->getTextValue(1).c_str(), "Ctrl+S")) 
                 {
-                    if (timer->getGate())
-                    {
-                        timer->checkValue(1);
-                    }
+                    timer->setGate(false);
                 }
                 ImGui::EndMenu();
             }
@@ -26,17 +20,11 @@ void utils::createMenuBar(Timer* timer)
             {
                 if (ImGui::MenuItem(timer->getTextValue(2).c_str(), "Ctrl+C")) 
                 {
-                    if (timer->getGate())
-                    {
-                        timer->checkValue(2);
-                    }
+                    timer->setGate(false);
                 }
                 if (ImGui::MenuItem(timer->getTextValue(3).c_str(), "Ctrl+V")) 
                 {
-                    if (timer->getGate())
-                    {
-                        timer->checkValue(3);
-                    }
+                    timer->setGate(false);
                 }
                 ImGui::EndMenu();
             }
@@ -46,17 +34,11 @@ void utils::createMenuBar(Timer* timer)
                 {
                     if (ImGui::MenuItem(timer->getTextValue(4).c_str()))
                     {
-                        if (timer->getGate())
-                    {
-                        timer->checkValue(4);
-                    }
+                        timer->setGate(false);
                     }
                     if (ImGui::MenuItem(timer->getTextValue(5).c_str()))
                     {
-                        if (timer->getGate())
-                    {
-                        timer->checkValue(5);
-                    }
+                        timer->setGate(false);
                     }
                     ImGui::EndMenu();
                 }
@@ -65,18 +47,13 @@ void utils::createMenuBar(Timer* timer)
                     if (ImGui::MenuItem(timer->getTextValue(6).c_str()))
                     {
                         ImGui::StyleColorsLight();
-                        if (timer->getGate())
-                        {
-                            timer->checkValue(6);
-                        }
+                        timer->setGate(false);
+
                     }
                     if (ImGui::MenuItem(timer->getTextValue(7).c_str()))
                     {
                         ImGui::StyleColorsDark();
-                        if (timer->getGate())
-                        {
-                            timer->checkValue(7);
-                        }
+                        timer->setGate(false);
                     }
                     ImGui::EndMenu();
                 }
@@ -86,17 +63,11 @@ void utils::createMenuBar(Timer* timer)
             {
                 if (ImGui::MenuItem(timer->getTextValue(8).c_str()))
                 {
-                    if (timer->getGate())
-                    {
-                        timer->checkValue(8);
-                    }
+                    timer->setGate(false);
                 }
                 if (ImGui::MenuItem(timer->getTextValue(9).c_str()))
                 {
-                    if (timer->getGate())
-                    {
-                        timer->checkValue(9);
-                    }
+                    timer->setGate(false);
                 }
                 ImGui::EndMenu();
             }
@@ -104,17 +75,11 @@ void utils::createMenuBar(Timer* timer)
             {
                 if (ImGui::MenuItem(timer->getTextValue(10).c_str()))
                 {
-                    if (timer->getGate())
-                    {
-                        timer->checkValue(10);
-                    }
+                    timer->setGate(false);
                 }
                 if (ImGui::MenuItem(timer->getTextValue(11).c_str()))
                 {
-                    if (timer->getGate())
-                    {
-                        timer->checkValue(11);
-                    }
+                    timer->setGate(true);
                 }
                 ImGui::EndMenu();
             }

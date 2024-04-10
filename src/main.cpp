@@ -12,6 +12,22 @@
 #include <iostream>
 
 #include "imgui_utils.hpp"
+#include <windows.h>
+
+enum ContentType 
+{
+    WORK_NAME, 
+    WORK_GOAL,
+    QUEST,
+    HICK_LAW,
+    MENU,
+    IMGUI_DOC,
+    IMGUI_MENU,
+    EMPTY
+};
+
+ContentType type = ContentType::EMPTY;
+char searchText[20] = "";
 
 int main(void)
 {
@@ -23,11 +39,11 @@ int main(void)
         return -1;
     }
 
-    float width = 640;
+    float width = 800;
     float height = 480;
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(width, height, "Лабораторная работа № 3", NULL, NULL);
+    window = glfwCreateWindow(width, height, "Лабораторная работа № 4", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -47,8 +63,8 @@ int main(void)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF("../assets/fonts/DudkaThin.ttf", 20, nullptr, io.Fonts->GetGlyphRangesCyrillic());
-    ImGui::StyleColorsLight();
+    io.Fonts->AddFontFromFileTTF("../assets/fonts/Involve-Regular.otf", 20, nullptr, io.Fonts->GetGlyphRangesCyrillic());
+    ImGui::StyleColorsClassic();
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 460 core");
@@ -71,11 +87,6 @@ int main(void)
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
 
     Timer timer;
-    std::thread thread([&timer]() 
-    {
-        timer.start();
-    });
-    thread.detach();    
 
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
@@ -102,19 +113,156 @@ int main(void)
         ImGui::SetColumnWidth(0, 320);
         
         ImGui::BeginChild("LeftChild", ImVec2(0, 0), true, ImGuiWindowFlags_NoTitleBar);
-        ImGui::Text("Входные значения:");
-        ImGui::Text(timer.getCurrentWidgetName().c_str());
+
+        // if (timer.getGate())
+        {
+            static int selectedOption = 0;
+            static const char* options[] = { "Option 1", "Option 2" };
+    
+            ImGui::BeginGroup();
+    
+            for (int i = 0; i < IM_ARRAYSIZE(options); i++) {
+                ImGui::SameLine();
+                if (ImGui::Selectable(options[i], selectedOption == i, 0, ImVec2(100, 0))) {
+                    selectedOption = i;
+                }
+            }
+    
+            ImGui::EndGroup();
+    
+            switch (selectedOption)
+            {
+            case  0:
+                if (ImGui::TreeNode("Справочник"))
+                {
+                    if (ImGui::TreeNode("Информация о работе"))
+                    {
+                        if (ImGui::Button("Название работы"))
+                        {
+                            type = ContentType::WORK_NAME;                              
+                        }
+
+                        if (ImGui::Button("Цель работы"))
+                        {
+                            type = ContentType::WORK_GOAL;                              
+                        }
+
+                        if (ImGui::Button("Задание"))
+                        {
+                            type = ContentType::QUEST;                              
+                        }
+
+                        ImGui::TreePop();
+                    }
+
+                    if (ImGui::TreeNode("Дополнительная информация"))
+                    {
+                        if (ImGui::Button("Закон Хика"))
+                        {
+                            type = ContentType::HICK_LAW;                              
+                        }
+
+                        if (ImGui::Button("Пункты меню"))
+                        {
+                            type = ContentType::MENU;                              
+                        }
+
+                        ImGui::TreePop();
+                    }
+
+                    if (ImGui::TreeNode("Документация"))
+                    {
+                        if (ImGui::Button("Документация ImGui"))
+                        {
+                            ShellExecute(0,"open","https://github.com/ocornut/imgui",NULL,NULL,SW_SHOWDEFAULT);
+                        }
+
+                        if (ImGui::Button("Меню"))
+                        {
+                            type = ContentType::IMGUI_MENU;                              
+                        }
+
+                        ImGui::TreePop();
+                    }
+
+                    ImGui::TreePop();
+                }
+
+                break;
+            
+            case 1:        
+                ImGui::InputText("##", searchText, sizeof(searchText));
+                ImGui::SameLine();
+                if (ImGui::Button("Поиск"))
+                {
+                    if (strcmp(searchText, "название") == 0)
+                    {
+                        type = ContentType::WORK_NAME;
+                    } else if (strcmp(searchText, "цель") == 0)
+                    {
+                        type = ContentType::WORK_GOAL;
+                    } else if (strcmp(searchText, "задание") == 0)
+                    {
+                        type = ContentType::QUEST;
+                    } else if (strcmp(searchText, "закон") == 0)
+                    {
+                        type = ContentType::HICK_LAW;
+                    } else if (strcmp(searchText, "меню") == 0)
+                    {
+                        type = ContentType::MENU;
+                    } else if (strcmp(searchText, "документация") == 0)
+                    {
+                        type = ContentType::IMGUI_DOC;
+                    } 
+                }
+
+                ImGui::Text("название\nцель\nзадание\nзакон\nменю\nдокументация\n");
+                break;
+            }
+        }
+
         ImGui::EndChild();
 
         ImGui::NextColumn();
 
         ImGui::BeginChild("RightChild", ImVec2(0, 0), true, ImGuiWindowFlags_NoTitleBar);
-        ImGui::Text("Выходные значения:");
-        auto logs = timer.getLogs();
-        for (auto log : logs)
+
+        switch (type)
         {
-            ImGui::Text(log.c_str());
+        case ContentType::WORK_NAME:
+            ImGui::Text("Измерение времени реакции пользователя\n на события от выбора пункта меню.\n Использование метода Хика.");
+            break;
+
+        case ContentType::WORK_GOAL:
+            ImGui::Text("Целью работы является фиксирование\n времени реакции пользователя на события\n на экране монитора посредством выбора пункта\n меню по системному таймеру и путем\n вычисления по методу Хика.");
+            break;
+
+        case ContentType::QUEST:
+            ImGui::Text("Пользуясь инструментальными\n средствами, воспроизвести первичное\n окно с текстовой областью\n для выводов результатов и стандартную\n панель меню с перечисленными\n пунктами.");
+            break;
+        
+        case ContentType::HICK_LAW:
+            ImGui::Text("T = a+blog2(n + 1)\n Где T — среднее значение времени\n реакции по всем альтернативным сигналам;\n n — число равновероятных альтернативных сигналов;\n a и b — коэффициенты пропорциональности.");
+            break;
+
+        case ContentType::MENU:
+            ImGui::Text("Файл\nПравка\nВид\nОкно\nСправка");
+            break;
+            
+        case ContentType::IMGUI_MENU:
+            ImGui::Text("if (ImGui::BeginMenu(File)");
+            ImGui::Text("{");
+            ImGui::Text("if (ImGui::MenuItem(New))");
+            ImGui::Text("if (ImGui::MenuItem(Open))");
+            ImGui::Text("if (ImGui::MenuItem(Save))");
+            ImGui::Text("ImGui::EndMenu();");
+            ImGui::Text("}");
+            break;
+
+        default:
+            break;
         }
+
         ImGui::EndChild();
 
         ImGui::End();
